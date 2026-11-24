@@ -271,8 +271,13 @@ func (h *Host) handleExit(id string, pid uint32) {
 	if crashed {
 		h.logAction(id, "crash", "error", "server process exited unexpectedly")
 		if sv, err := h.store.Get(id); err == nil && sv.ForceRunning {
+			delay, ok := h.crashBackoff(id)
+			if !ok {
+				h.logAction(id, "auto-restart", "error", "crash loop detected (5 crashes in 15 minutes); auto-restart suspended; start manually once fixed")
+				return
+			}
 			go func() {
-				time.Sleep(10 * time.Second)
+				time.Sleep(delay)
 				if !h.isRunning(id) && !h.state(id).busy {
 					h.logAction(id, "auto-restart", "info", "force running enabled")
 					h.Start(id)
@@ -409,4 +414,22 @@ func errStr(err error) string {
 		return err.Error()
 	}
 	return ""
+}
+
+func (h *Host) crashBackoff(id string) (time.Duration, bool) {
+	s := h.state(id)
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	now := time.Now()
+	kept := s.crashes[:0]
+	for _, t := range s.crashes {
+		if now.Sub(t) < 15*time.Minute {
+			kept = append(kept, t)
+		}
+	}
+	s.crashes = append(kept, now)
+	if len(s.crashes) > 5 {
+		return 0, false
+	}
+	return time.Duration(10<<uint(len(s.crashes)-1)) * time.Second, true
 }

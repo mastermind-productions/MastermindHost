@@ -85,7 +85,15 @@ func NewStore() (*Store, error) {
 	b, err := os.ReadFile(s.path)
 	if err == nil {
 		if err := json.Unmarshal(b, &s.data); err != nil {
-			return nil, err
+			bb, berr := os.ReadFile(s.path + ".bak")
+			if berr != nil {
+				return nil, err
+			}
+			s.data = storeFile{}
+			if err := json.Unmarshal(bb, &s.data); err != nil {
+				return nil, err
+			}
+			_ = os.WriteFile(s.path+".corrupt", b, 0o644)
 		}
 	} else if !errors.Is(err, os.ErrNotExist) {
 		return nil, err
@@ -112,6 +120,9 @@ func (s *Store) saveLocked() error {
 	tmp := s.path + ".tmp"
 	if err := os.WriteFile(tmp, b, 0o644); err != nil {
 		return err
+	}
+	if old, err := os.ReadFile(s.path); err == nil && len(old) > 0 {
+		_ = os.WriteFile(s.path+".bak", old, 0o644)
 	}
 	return os.Rename(tmp, s.path)
 }

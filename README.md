@@ -7,7 +7,8 @@ Game-server manager modelled on HaruHost (non-GSM). Wails v2 (Go) + React/MUI, b
 ## Scope
 - Games: ARK: Survival Ascended (arksa), ARK: Survival Evolved (arkse), Palworld.
 - Server folder name always equals the Server Name; renaming a server renames its folder.
-- Later phase (not started): Rappelz, Hero, Scions, Cabal management.
+- MMO script servers (import-only): Rappelz, Hero Online, Scions of Fate.
+- Later phase (not started): Cabal.
 
 ## Deployment
 - Portable single exe, no installer: `F:\SteamLibrary\steamapps\common\MastermindHost\MasterMindHost.exe` (copied from `build\bin\MasterMindHost.exe`).

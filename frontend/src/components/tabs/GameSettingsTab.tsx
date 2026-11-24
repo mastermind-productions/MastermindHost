@@ -84,7 +84,13 @@ export default function GameSettingsTab({server, onChanged}: TabProps) {
             const changes = GROUPS.flatMap(([, defs]) => defs)
                 .filter(d => d.file === file && id(d) in edits)
                 .map(d => new backend.IniChange({section: d.section, key: d.key, value: edits[id(d)], remove: edits[id(d)].trim() === ''}));
-            if (changes.length && (await run(Host.ApplyIni(server.id, file, changes))) === undefined) return;
+            if (!changes.length) continue;
+            try {
+                await Host.ApplyIni(server.id, file, changes);
+            } catch (e: any) {
+                notify(String(e?.message ?? e), 'error');
+                return;
+            }
         }
         await load();
         onChanged();

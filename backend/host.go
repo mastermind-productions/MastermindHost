@@ -30,6 +30,7 @@ const (
 )
 
 type rtState struct {
+	crashes    []time.Time
 	status     string
 	pid        uint32
 	startTime  time.Time

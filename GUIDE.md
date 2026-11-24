@@ -102,6 +102,7 @@ These are managed as scripts, not Steam installs:
 MasterMindHost.exe
 MastermindHost-data\
   store.json          <- all server definitions and settings
+  store.json.bak      <- copy of the previous save (used automatically if store.json is damaged)
   <server folders>\   <- newly created servers (unless overridden in Settings)
   backups\
   steamcmd\
@@ -114,5 +115,5 @@ Set the `MASTERMINDHOST_DATA` environment variable to point the app at a differe
 - **Server shows a conflict or will not bind** — open **Ports & A2S**, **Rescan**, and use **Find free UDP/TCP port** to pick a free one.
 - **Files seem corrupt or the build ID is odd** — Overview → **Validate files**.
 - **Update check finds nothing but you know there is an update** — top-bar refresh (**Check for game updates**) refreshes every installed server; also check the Steam beta branch on **Discord / Beta / Firewall**.
-- **Crashed server** — with **Force running** on it comes back by itself; otherwise just press **Start**.
+- **Crashed server** — with **Force running** on it comes back by itself (10 s, then 20 s, 40 s... between attempts); after 5 crashes in 15 minutes auto-restart is suspended and an Events entry says so. Without Force running, just press **Start**.
 - **Deployed exe will not update** — close the running app before copying a newly built exe over it (Windows locks running exes).
