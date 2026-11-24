@@ -2,6 +2,8 @@
 
 Game-server manager modelled on HaruHost (non-GSM). Wails v2 (Go) + React/MUI, black and dark-green theme.
 
+**Using the app?** See [GUIDE.md](GUIDE.md) for a basic how-to.
+
 ## Scope
 - Games: ARK: Survival Ascended (arksa), ARK: Survival Evolved (arkse), Palworld.
 - Server folder name always equals the Server Name; renaming a server renames its folder.
@@ -44,4 +46,6 @@ MMO servers + grouping + reordering (2026-11-24, dev build, scratch data): impor
 NOT verified: ARK SE install/start, Discord webhooks, firewall rules (needs admin), scheduler firing, backup restore.
 
 ## Git
-Repository initialised on master with no commits. Git identity is not configured; set it before the first commit.
+GitHub: https://github.com/mastermind-productions/MastermindHost (branch `main`, tracks `origin/main`).
+Initial commit `15cfaba`: "Initial commit: MastermindHost base (ARK SA/SE, Palworld) + MMO script servers", author Nathan Williams <mastermind2214@gmail.com> (set repo-local via `git config user.name/user.email`). `build/bin`, `frontend/dist` and `node_modules` are gitignored.
+Push from Git-bash: `GIT_TERMINAL_PROMPT=0 timeout 60 git push` (a plain push can hang waiting on a credential prompt).
