@@ -351,7 +351,7 @@ func (h *Host) CheckForUpdates() error {
 	var last error
 	for _, sv := range h.store.List() {
 		app := Games[sv.Game].AppID
-		if seen[app] {
+		if app == "" || seen[app] {
 			continue
 		}
 		seen[app] = true
